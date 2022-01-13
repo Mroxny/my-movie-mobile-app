@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rl_swipe"
+    tools:context=".RateListActivity"
+    android:background="?attr/colorOnPrimary">
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorOnPrimary"
+        android:padding="4dp"
+        android:backgroundTint="?attr/colorOnPrimary"
+        android:scrollbars="vertical" />
+
+
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

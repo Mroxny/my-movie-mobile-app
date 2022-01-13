@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SingleMovieActivity"
+    android:background="?attr/colorOnPrimary"
+    android:id="@+id/movie_swipe">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorOnPrimary">
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/ic_round_arrow_back_24"
+        android:onClick="onBack"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="UsingOnClickInXml" />
+
+    <TextView
+        android:id="@+id/sm_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/tag_title"
+        android:textColor="?attr/colorPrimary"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button" />
+
+
+    <TextView
+        android:id="@+id/sm_orgTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/tag_orgTitle"
+        android:textColor="?attr/colorPrimary"
+        android:textSize="15sp"
+        android:textAlignment="center"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sm_title" />
+
+    <ImageView
+        android:id="@+id/sm_img"
+        android:layout_width="130dp"
+        android:layout_height="200dp"
+        android:src="@drawable/ic_noimage"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sm_orgTitle"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <TextView
+        android:id="@+id/sm_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="@string/tag_year"
+        android:textSize="15sp"
+        android:textColor="?attr/colorPrimary"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/sm_img"
+        app:layout_constraintStart_toStartOf="@+id/sm_img"
+        app:layout_constraintTop_toBottomOf="@+id/sm_img" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/sm_img"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/sm_img"
+        app:layout_constraintTop_toTopOf="@+id/sm_img"
+        app:layout_constraintVertical_bias="0.26">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tag_director"
+            android:textAlignment="center"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/sm_dir"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:text="@string/tag_director"
+            android:textAlignment="center"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tag_producer"
+            android:textAlignment="center"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/sm_prod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tag_producer"
+            android:textAlignment="center"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="20sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:onClick="viewRates"
+        app:layout_constraintBottom_toBottomOf="@+id/sm_img"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/sm_img"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        tools:ignore="UsingOnClickInXml">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_star"
+            app:tint="?attr/colorPrimary"
+            />
+
+        <TextView
+            android:id="@+id/sm_avg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20sp"
+            android:textColor="?attr/colorPrimary"
+            android:text="Average"
+            android:layout_gravity="center"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_person"
+            app:tint="?attr/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/sm_rates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rates"
+            android:textColor="?attr/colorPrimary"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="5dp"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sm_year"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+    <RelativeLayout
+        android:id="@+id/sm_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:layout_constraintVertical_bias="0.15">
+
+        <include layout="@layout/rating_stars" />
+
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/sm_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+
+    <TextView
+        android:id="@+id/sm_avgRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Average rate: 0.0"
+        android:textSize="25sp"
+        android:textColor="?attr/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sm_relativeLayout" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

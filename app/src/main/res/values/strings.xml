@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">MyMovie</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="button_login">Login</string>
+    <string name="error_fill_fields">You need to fill all necessary fields</string>
+    <string name="tag_title">Title</string>
+    <string name="tag_orgTitle">Original title</string>
+    <string name="tag_year">Year</string>
+    <string name="tag_director">Director</string>
+    <string name="tag_producer">Producer</string>
+    <string name="hint_optional">(optional)</string>
+    <string name="tag_add_movie">Add Movie</string>
+    <string name="button_add">Add</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="tag_pictures">Pictures</string>
+    <string name="tag_plot">Plot</string>
+    <string name="tag_cast">Cast</string>
+    <string name="tag_audio">Audio</string>
+    <string name="info_average_rate1">Your average rate</string>
+    <string name="info_average_rate2">Not all categories are rated</string>
+    <string name="info_no_rates_yet">No rates yet</string>
+    <string name="tag_rate_info1">rates</string>
+    <string name="tag_rate_info2">as fallows</string>
+    <string name="tag_average">Average</string>
+</resources>

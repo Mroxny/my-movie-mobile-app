@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SingleRateActivity"
+    android:background="?attr/colorOnPrimary">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/sr_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Info"
+                android:textColor="?attr/colorPrimary"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="30dp"/>
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_image"
+                    app:tint="?attr/colorPrimary"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tag_pictures"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textColor="?attr/colorPrimary"/>
+
+                <RatingBar
+                    android:id="@+id/sr_ratePictures"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:isIndicator="true"
+                    android:progressBackgroundTint="@color/grey"
+                    android:numStars="5"
+                    android:stepSize="1" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_plot"
+                    app:tint="?attr/colorPrimary"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tag_plot"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textColor="?attr/colorPrimary"/>
+
+                <RatingBar
+                    android:id="@+id/sr_ratePlot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:isIndicator="true"
+                    android:progressBackgroundTint="@color/grey"
+                    android:numStars="5"
+                    android:stepSize="1" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_group"
+                    app:tint="?attr/colorPrimary"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tag_cast"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textColor="?attr/colorPrimary"/>
+
+                <RatingBar
+                    android:id="@+id/sr_rateCast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:isIndicator="true"
+                    android:progressBackgroundTint="@color/grey"
+                    android:numStars="5"
+                    android:stepSize="1" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_music"
+                    app:tint="?attr/colorPrimary"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tag_audio"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textColor="?attr/colorPrimary"/>
+
+                <RatingBar
+                    android:id="@+id/sr_rateAudio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:isIndicator="true"
+                    android:progressBackgroundTint="@color/grey"
+                    android:numStars="5"
+                    android:stepSize="1" />
+
+                <TextView
+                    android:id="@+id/sr_average"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Average: 0.0"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="30sp"
+                    android:textColor="?attr/colorPrimary"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
