@@ -25,14 +25,10 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 public class DbLogger {
-    //login
+
     private byte[] config = {-114, -4, -110, -111, 28, 34, -7, -122, -23, 100, -127, -96, 23, 51, 43, 47, 62, -86, 117, 72, -8, -79, -33, 87, -11, 66, 25, -88, -54, -5, -8, -80};
-    //url
     private byte[] data = {-74, -100, -27, -43, 22, 75, -65, 81, -78, -45, 63, 36, -43, -36, -91, -85, -12, -20, 99, -113, 36, -98, -97, 85, -100, -35, 85, -6, -3, 94, 119, 58, -114, -4, -110, -111, 28, 34, -7, -122, -23, 100, -127, -96, 23, 51, 43, 47, 62, -86, 117, 72, -8, -79, -33, 87, -11, 66, 25, -88, -54, -5, -8, -80};
-    //password
     private byte[] log = {-64, -11, 115, 23, -124, -110, 49, 30, 98, -39, -113, 11, -120, 80, -112, -6};
-
-
 
     private SecretKey generateKey(String password) throws NoSuchAlgorithmException, InvalidKeySpecException
     {

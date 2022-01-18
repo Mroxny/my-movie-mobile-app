@@ -40,13 +40,8 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies);
 
-
         setAddMovieButton();
         setUpSwipeRefresh();
-
-        /*ImageManager im = new ImageManager();
-        im.downloadImage();*/
-
     }
 
     private void setAddMovieButton(){
@@ -145,6 +140,7 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
 
         movies.add(movie);
     }
+
 
     public void buildRecyclerView() {
         RecyclerView mRecyclerView = findViewById(R.id.recyclerView);
