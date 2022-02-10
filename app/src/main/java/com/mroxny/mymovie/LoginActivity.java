@@ -5,12 +5,16 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
+
+    private final int SPLASH_SCREEN_TIME_OUT = 1000;
 
     private EditText UsernameEt, PasswordEt;
     private ProgressBar progressBar;
@@ -29,6 +33,9 @@ public class LoginActivity extends AppCompatActivity {
         PasswordEt = findViewById(R.id.login_etPassword);
         progressBar = findViewById(R.id.login_PB);
         constraintLayout = findViewById(R.id.cl_layout);
+
+        TextView tvVersion = findViewById(R.id.version);
+        tvVersion.setText(BuildConfig.VERSION_NAME);
 
         checkAutoLogin();
 
@@ -84,17 +91,23 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginSuccess(int userId){
-        progressBar.setVisibility(View.GONE);
 
         PreferencesManager.insertInt(PreferencesManager.LOGGED_USER_ID,userId,getApplicationContext());
         PreferencesManager.insertString(PreferencesManager.LOGGED_USER_NAME, username,getApplicationContext());
         PreferencesManager.insertString(PreferencesManager.LOGGED_USER_PASSWORD, password,getApplicationContext());
 
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.GONE);
 
-        Intent intent = new Intent(this,MoviesActivity.class);
-        startActivity(intent);
-        processing = false;
-        finish();
+                Intent intent = new Intent(LoginActivity.this,MoviesActivity.class);
+                startActivity(intent);
+                processing = false;
+                finish();
+            }
+        }, SPLASH_SCREEN_TIME_OUT);
     }
 
     private void loginFailed(String message){

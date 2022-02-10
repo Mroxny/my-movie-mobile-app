@@ -24,4 +24,7 @@
     <string name="tag_rate_info1">ocenia</string>
     <string name="tag_rate_info2">następująco</string>
     <string name="tag_average">Średnia ocena</string>
+    <string name="tag_account">Konto</string>
+    <string name="tag_logout">Wyloguj się</string>
+
 </resources>

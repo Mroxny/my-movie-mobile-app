@@ -23,4 +23,7 @@
     <string name="tag_rate_info1">rates</string>
     <string name="tag_rate_info2">as fallows</string>
     <string name="tag_average">Average</string>
+    <string name="tag_account">Account</string>
+    <string name="tag_logout">Log out</string>
+
 </resources>

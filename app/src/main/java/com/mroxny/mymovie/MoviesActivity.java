@@ -1,51 +1,53 @@
 package com.mroxny.mymovie;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.widget.Button;
+import android.widget.ToggleButton;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.InvalidParameterSpecException;
+
 import java.util.ArrayList;
-import java.util.Arrays;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
 
 public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private ArrayList<Movie> movies;
+    private ArrayList<Bitmap> images;
     private MovieListAdapter mAdapter;
     private SwipeRefreshLayout swipeLayout;
-    private FloatingActionButton addMovieButton;
+    private SideMenuManager sideMenuManager;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies);
 
-        setAddMovieButton();
+        images = null;
+
+        setSideMenu();
         setUpSwipeRefresh();
     }
 
     private void setAddMovieButton(){
-        addMovieButton = findViewById(R.id.addMovie);
+        FloatingActionButton addMovieButton = findViewById(R.id.nav_toggle);
         addMovieButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,6 +75,14 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
 
     }
 
+    private void setSideMenu(){
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        FloatingActionButton toggle = findViewById(R.id.nav_toggle);
+
+        sideMenuManager = new SideMenuManager(this,drawer,navigationView,toggle);
+        sideMenuManager.setSideMenu();
+    }
 
     private void createMovieList(){
         String query = "SELECT filmy.*, " +
@@ -96,33 +106,70 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
         outputManager.execute(query);
         outputManager.setOnDataListener(data -> {
 
-            for(int row = 0; row< data.length; row++){
-                addMovieToList(data,row);
+            for (String[] datum : data) {
+                addMovieToList(datum);
             }
 
             buildRecyclerView();
+            if (!checkImages()) addImagesToMovies();
+            else mAdapter.setImages(images);
             swipeLayout.setRefreshing(false);
         });
 
 
     }
 
-    private void addMovieToList(String[][] data, int row){
+    @SuppressLint("NotifyDataSetChanged")
+    private void addImagesToMovies(){
+        String[] fileNames = new String[movies.size()];
+        ImageManager im = new ImageManager();
+
+        for(int i = 0; i < movies.size(); i++) {
+
+            if (movies.get(i).getImage().length() > 0) fileNames[i] = movies.get(i).getImage();
+            else fileNames[i] = "";
+        }
+
+            im.setFileName(fileNames);
+            im.execute(ImageManager.ACTION_DOWNLOAD);
+            im.setOnDataListener(new ImageManager.DataListener() {
+                @Override
+                public void onDataLoaded(ArrayList<Bitmap> img) {
+                    images = img;
+                    mAdapter.setImages(images);
+                    mAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onDataLoaded(Bitmap img) {
+
+                }
+            });
+
+    }
+
+    private boolean checkImages(){
+        if (images == null) return false;
+        else if(images.size() != movies.size()) return false;
+        else return true;
+    }
+
+    private void addMovieToList(String[] data){
         int id, year, rateNum;
         float rateAvg;
         String title, orgTitle, dir, prod, img;
         boolean approved;
 
-        id = Integer.parseInt(data[row][0]);
-        title = data[row][1];
-        orgTitle = data[row][2];
-        year = Integer.parseInt(data[row][3]);
-        dir = data[row][4];
-        prod = data[row][5];
-        img = data[row][6];
-        approved = data[row][7].equals("1");
-        rateNum = Integer.parseInt(data[row][8]);
-        rateAvg = Float.parseFloat(data[row][9]);
+        id = Integer.parseInt(data[0]);
+        title = data[1];
+        orgTitle = data[2];
+        year = Integer.parseInt(data[3]);
+        dir = data[4];
+        prod = data[5];
+        img = data[6];
+        approved = data[7].equals("1");
+        rateNum = Integer.parseInt(data[8]);
+        rateAvg = Float.parseFloat(data[9]);
 
 
         Movie movie = new Movie(
@@ -142,11 +189,13 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
     }
 
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     public void buildRecyclerView() {
         RecyclerView mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new MovieListAdapter(movies);
+        Drawable noImageIcon = getDrawable(R.drawable.ic_noimage);
+        mAdapter = new MovieListAdapter(movies, noImageIcon);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
@@ -159,6 +208,7 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
                 intent.putExtra("Movie", movie);
                 startActivity(intent);
                 finish();
+
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -178,5 +228,10 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
     @Override
     public void onRefresh() {
         createMovieList();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(!sideMenuManager.closeSideMenu())super.onBackPressed();
     }
 }

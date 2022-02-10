@@ -5,6 +5,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,6 +14,8 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class SingleMovieActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener  {
 
@@ -160,7 +163,21 @@ public class SingleMovieActivity extends AppCompatActivity implements SwipeRefre
         tvAvg.setText(String.format("%.2f",movie.getRateAverage()));
         tvRates.setText(Integer.toString(movie.getRateNumber()));
 
-        //ivImage.setImageDrawable();
+
+        ImageManager im = new ImageManager();
+        im.setFileName(movie.getImage());
+        im.execute(ImageManager.ACTION_DOWNLOAD);
+        im.setOnDataListener(new ImageManager.DataListener() {
+            @Override
+            public void onDataLoaded(ArrayList<Bitmap> img) {
+
+            }
+
+            @Override
+            public void onDataLoaded(Bitmap img) {
+                if(img != null) ivImage.setImageBitmap(img);
+            }
+        });
     }
 
     private void setUpStars(){

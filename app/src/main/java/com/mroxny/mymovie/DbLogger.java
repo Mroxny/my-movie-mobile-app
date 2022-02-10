@@ -1,5 +1,6 @@
 package com.mroxny.mymovie;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
@@ -36,6 +37,7 @@ public class DbLogger {
     }
 
 
+    @SuppressLint("GetInstance")
     private String decryptMsg(byte[] cipherText, SecretKey secret)
             throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidParameterSpecException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, UnsupportedEncodingException
     {
@@ -43,7 +45,7 @@ public class DbLogger {
         Cipher cipher = null;
         cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
         cipher.init(Cipher.DECRYPT_MODE, secret);
-        String decryptString = new String(cipher.doFinal(cipherText), "UTF-8");
+        String decryptString = new String(cipher.doFinal(cipherText), StandardCharsets.UTF_8);
         return decryptString;
     }
 
