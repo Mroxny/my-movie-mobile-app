@@ -18,11 +18,20 @@ public class InputManager extends AsyncTask<String, Void, String> {
     private static String user;
     private static String pass;
 
+    private InputManager.DataListener listener;
+
+
     Context context;
 
     public InputManager(Context context){
         this.context=context;
+        this.listener = null;
     }
+
+    public void setOnDataListener(InputManager.DataListener listener) {
+        this.listener = listener;
+    }
+
 
     @Override
     protected void onPreExecute() {
@@ -52,8 +61,12 @@ public class InputManager extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        //Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
         System.out.println("Input result: "+result);
+        listener.onDataUploaded(result);
+    }
+
+    public interface DataListener {
+        void onDataUploaded(String mes);
     }
 
     private void decData(){

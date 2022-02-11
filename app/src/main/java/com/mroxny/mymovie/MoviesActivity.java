@@ -1,20 +1,22 @@
 package com.mroxny.mymovie;
 
+import static android.widget.AbsListView.OnScrollListener.SCROLL_STATE_IDLE;
+import static android.widget.AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL;
+
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ToggleButton;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +27,7 @@ import com.google.android.material.navigation.NavigationView;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -33,6 +36,7 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
     private MovieListAdapter mAdapter;
     private SwipeRefreshLayout swipeLayout;
     private SideMenuManager sideMenuManager;
+    private boolean asc = true;
 
 
     @Override
@@ -46,39 +50,13 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
         setUpSwipeRefresh();
     }
 
-    private void setAddMovieButton(){
-        FloatingActionButton addMovieButton = findViewById(R.id.nav_toggle);
-        addMovieButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AddMovieDialog addMovie = new AddMovieDialog(MoviesActivity.this);
-                addMovie.show(getSupportFragmentManager(), "add movie dialog");
-                addMovie.setOnAddMovieListener(new AddMovieDialog.AddMovieDialogListener() {
-                    @Override
-                    public void applyTexts(String title, String orgTitle, int year, String dir, String prod) {
-                        addMovie( title,  orgTitle,  year,  dir,  prod);
-                    }
-                });
-            }
-        });
-    }
-
-    private void addMovie(String title, String orgTitle, int year, String dir, String prod){
-
-        String query = "INSERT INTO `filmy` ( `Tytul`, `OrgTytul`, `RokProd`, `Rezyser`, `Wytwornia`, `Img`, `Zatwierdzony`) " +
-                "VALUES ('"+SyntaxSQL.correctStatement(title)+"', '"+SyntaxSQL.correctStatement(orgTitle)+"', "+year+", '"+SyntaxSQL.correctStatement(dir)+"', '"+SyntaxSQL.correctStatement(prod)+"', '', 1);";
-
-        InputManager inputManager = new InputManager(this);
-        inputManager.execute(query);
-        onRefresh();
 
 
-    }
 
     private void setSideMenu(){
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        FloatingActionButton toggle = findViewById(R.id.nav_toggle);
+        Button toggle = findViewById(R.id.nav_toggle);
 
         sideMenuManager = new SideMenuManager(this,drawer,navigationView,toggle);
         sideMenuManager.setSideMenu();
@@ -91,7 +69,7 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
                 "FROM `filmy` LEFT JOIN oceny ON (oceny.film_Id = filmy.Id_film) " +
                 "WHERE Zatwierdzony = 1 " +
                 "GROUP BY Id_film " +
-                "ORDER BY filmy.Tytul ASC;";
+                "ORDER BY filmy.Tytul" + (asc?" ASC;":" DESC;");
 
         createMovieList(query);
     }
@@ -109,13 +87,54 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
             for (String[] datum : data) {
                 addMovieToList(datum);
             }
-
+            setSortingButton();
+            setSearchBar();
             buildRecyclerView();
             if (!checkImages()) addImagesToMovies();
             else mAdapter.setImages(images);
             swipeLayout.setRefreshing(false);
         });
 
+
+    }
+
+    private void setSortingButton(){
+        Button sortButton = findViewById(R.id.toggle_sort);
+        sortButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                asc = !asc;
+                sortButton.setScaleY(sortButton.getScaleY()*-1);
+                Collections.reverse(movies);
+                mAdapter.filterList(movies);
+                if(images != null){
+                    Collections.reverse(images);
+                    mAdapter.setImages(images);
+                }
+
+            }
+        });
+    }
+
+    private void setSearchBar(){
+
+        EditText searchBar = findViewById(R.id.search_bar);
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                filter(editable.toString());
+            }
+        });
 
     }
 
@@ -136,6 +155,7 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
                 @Override
                 public void onDataLoaded(ArrayList<Bitmap> img) {
                     images = img;
+                    if(!asc) Collections.reverse(images);
                     mAdapter.setImages(images);
                     mAdapter.notifyDataSetChanged();
                 }
@@ -200,6 +220,26 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
+        View tools = findViewById(R.id.tools);
+        @SuppressLint("Recycle") ObjectAnimator hide = ObjectAnimator.ofFloat(tools, "translationY", -200f);
+        hide.setDuration(200);
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            boolean isHidden = false;
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(!isHidden && dy > 0){
+                    isHidden = true;
+                    hide.start();
+                }
+                else if( isHidden && dy <= 0 ){
+                    isHidden = false;
+                    hide.reverse();
+                }
+            }
+        });
         mAdapter.setOnItemClickListener(position -> {
 
             try{
@@ -215,6 +255,22 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
             }
 
         });
+    }
+
+    private void filter(String text) {
+        ArrayList<Movie> filteredList = new ArrayList<>();
+        ArrayList<Bitmap> filteredImages = new ArrayList<>();
+
+
+        for (int i=0; i<movies.size(); i++) {
+            if (movies.get(i).getTitle().toLowerCase().contains(text.toLowerCase()) ||movies.get(i).getOriginalTitle().toLowerCase().contains(text.toLowerCase())){
+                filteredList.add(movies.get(i));
+                filteredImages.add(images.get(i));
+            }
+        }
+
+        mAdapter.filterList(filteredList);
+        mAdapter.setImages(filteredImages);
     }
 
     private void setUpSwipeRefresh(){

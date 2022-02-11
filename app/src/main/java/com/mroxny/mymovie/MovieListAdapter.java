@@ -60,8 +60,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         }
     }
 
-    public MovieListAdapter(ArrayList<Movie> exampleList, Drawable noImageIcon) {
-        movieList = exampleList;
+    public MovieListAdapter(ArrayList<Movie> list, Drawable noImageIcon) {
+        movieList = list;
         this.noImage = noImageIcon;
     }
 
@@ -69,6 +69,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_item, parent, false);
         MovieViewHolder evh = new MovieViewHolder(v, mListener);
+
         return evh;
     }
 
@@ -102,4 +103,11 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     public int getItemCount() {
         return movieList.size();
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void filterList(ArrayList<Movie> filteredList) {
+        movieList = filteredList;
+        notifyDataSetChanged();
+    }
+
 }

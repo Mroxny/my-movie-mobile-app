@@ -4,7 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AccountActivity">
+    tools:context=".AccountActivity"
+    android:background="?attr/colorOnPrimary">
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:onClick="goBack"
+        android:background="@drawable/ic_round_arrow_back_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="UsingOnClickInXml" />
 
     <TextView
         android:id="@+id/ac_nickname"
@@ -22,19 +33,19 @@
         android:id="@+id/item_imageHolder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#00000000"
+        android:backgroundTint="?attr/colorOnPrimary"
         android:elevation="10dp"
         android:padding="2dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="30dp"
-        app:cardCornerRadius="90dp"
+        app:cardCornerRadius="45dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/ic_person" />
+            android:src="@drawable/ic_empty_profile" />
 
     </androidx.cardview.widget.CardView>
 

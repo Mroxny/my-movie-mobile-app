@@ -3,6 +3,7 @@ package com.mroxny.mymovie;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,5 +20,14 @@ public class AccountActivity extends AppCompatActivity {
         tvNick = findViewById(R.id.ac_nickname);
 
         tvNick.setText(PreferencesManager.getString(PreferencesManager.LOGGED_USER_NAME, "Error", this));
+    }
+
+    public void goBack(View view){
+        onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

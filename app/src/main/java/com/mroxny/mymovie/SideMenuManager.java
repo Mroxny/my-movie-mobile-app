@@ -2,7 +2,9 @@ package com.mroxny.mymovie;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.ContextMenu;
 import android.view.MenuItem;
@@ -18,12 +20,12 @@ import com.google.android.material.navigation.NavigationView;
 
 public class SideMenuManager implements NavigationView.OnNavigationItemSelectedListener{
 
-    private Context context;
-    private DrawerLayout drawer;
-    private NavigationView navigationView;
-    private FloatingActionButton toggle;
+    private final Context context;
+    private final DrawerLayout drawer;
+    private final NavigationView navigationView;
+    private final Button toggle;
 
-    public SideMenuManager(Context context, DrawerLayout drawer, NavigationView navigationView, FloatingActionButton toggle){
+    public SideMenuManager(Context context, DrawerLayout drawer, NavigationView navigationView, Button toggle){
         this.context = context;
         this.drawer = drawer;
         this.navigationView = navigationView;
@@ -58,7 +60,7 @@ public class SideMenuManager implements NavigationView.OnNavigationItemSelectedL
                 goToActivity(AddMovieActivity.class);
                 break;
             case R.id.nav_logout:
-                logOut();
+                showAlertDialog();
                 break;
         }
         return true;
@@ -77,6 +79,22 @@ public class SideMenuManager implements NavigationView.OnNavigationItemSelectedL
         Intent intent = new Intent(context, LoginActivity.class);
         context.startActivity(intent);
         ((Activity)context).finish();
+    }
+
+    private void showAlertDialog(){
+        new AlertDialog.Builder(context)
+                .setTitle(context.getResources().getString(R.string.tag_logout))
+                .setMessage(context.getResources().getString(R.string.info_log_out))
+
+                .setPositiveButton(R.string.button_yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        logOut();
+                    }
+                })
+
+                .setNegativeButton(R.string.button_no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
 }
