@@ -18,19 +18,35 @@
     <string name="button_cancel">Cancel</string>
     <string name="button_yes">Yes</string>
     <string name="button_no">No</string>
+    <string name="button_click_here">Click here</string>
+    <string name="button_other_user_movies">See other movies rated by this user</string>
     <string name="tag_pictures">Pictures</string>
     <string name="tag_plot">Plot</string>
     <string name="tag_cast">Cast</string>
     <string name="tag_audio">Audio</string>
+    <string name="tag_movies_rated">Movies rated</string>
     <string name="info_average_rate1">Your average rate</string>
     <string name="info_average_rate2">Not all categories are rated</string>
     <string name="info_no_rates_yet">No rates yet</string>
     <string name="info_added_movie">The movie added successfully</string>
+    <string name="info_activity_coming_soon">This activity will be available soon</string>
+    <string name="info_no_rated_movies">You haven`t rated any movies yet</string>
     <string name="info_log_out">Are you sure you want to log out?</string>
     <string name="tag_rate_info1">rates</string>
     <string name="tag_rate_info2">as fallows</string>
     <string name="tag_average">Average</string>
     <string name="tag_account">Account</string>
     <string name="tag_logout">Log out</string>
-
+    <string name="notification_title_1">Finally!!!</string>
+    <string name="notification_text_1">Version 1.0 of the MyMovie is here!</string>
+    <string name="notification_big_text_1">
+        Version 1.0 of MyMovie is here!\n
+         Check out what`s new: \n
+         - New menu bar\n
+         - Display images\n
+         - Account page\n
+         - New way to add movies\n
+         - New way of sorting movies\n
+         - Display movies rated by you\n
+    </string>
 </resources>

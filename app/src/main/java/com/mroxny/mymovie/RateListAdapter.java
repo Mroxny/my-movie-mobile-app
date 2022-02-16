@@ -1,6 +1,9 @@
 package com.mroxny.mymovie;
 
 
+import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,7 @@ import java.util.ArrayList;
 
 public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.RateViewHolder> {
     private ArrayList<Rate> rateList;
+    private ArrayList<Bitmap> imgArr;
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
@@ -25,13 +29,19 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.RateVi
     }
 
     public static class RateViewHolder extends RecyclerView.ViewHolder {
-        public TextView userName;
-        public TextView rate;
+        public TextView userName, rate;
+        public ImageView userProfile;
+        private Drawable noImage;
+
 
         public RateViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
             userName = itemView.findViewById(R.id.rateItem_userName);
+            userProfile = itemView.findViewById(R.id.rateItem_profile);
             rate = itemView.findViewById(R.id.rateItem_rate);
+            noImage = userProfile.getDrawable();
+
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -58,6 +68,7 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.RateVi
         return evh;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(RateViewHolder holder, int position) {
         Rate currentItem = rateList.get(position);
@@ -65,10 +76,20 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.RateVi
         holder.userName.setText(currentItem.getUserName());
         holder.rate.setText(Float.toString(currentItem.getAverageRate()));
 
+        if(imgArr != null && imgArr.get(position) != null) holder.userProfile.setImageBitmap(imgArr.get(position));
+        else holder.userProfile.setImageDrawable(holder.noImage);
+
     }
 
     @Override
     public int getItemCount() {
         return rateList.size();
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setImages(ArrayList<Bitmap> images){
+        imgArr = images;
+        notifyDataSetChanged();
+    }
+
 }

@@ -48,10 +48,7 @@ public class SingleMovieActivity extends AppCompatActivity implements SwipeRefre
     
 
     public void onBack (View v){
-        saveChanges();
-        Intent intent = new Intent(this, MoviesActivity.class);
-        startActivity(intent);
-        finish();
+        onBackPressed();
     }
 
     public void viewRates(View v){
@@ -61,7 +58,6 @@ public class SingleMovieActivity extends AppCompatActivity implements SwipeRefre
             intent.putExtra("Movie",movie);
             intent.putExtra("ActivityId",1);
             startActivity(intent);
-            finish();
         }
         else Toast.makeText(this,getResources().getString(R.string.info_no_rates_yet),Toast.LENGTH_SHORT).show();
     }
@@ -163,21 +159,18 @@ public class SingleMovieActivity extends AppCompatActivity implements SwipeRefre
         tvAvg.setText(String.format("%.2f",movie.getRateAverage()));
         tvRates.setText(Integer.toString(movie.getRateNumber()));
 
+        if(movie.getImage() != null && movie.getImage().length()>0){
+            ImageManager im = new ImageManager();
+            im.downloadCover(movie.getImage());
+            im.setOnDataListener(new ImageManager.DataListener() {
+                @Override
+                public void onDataLoaded(ArrayList<Bitmap> img) {
+                    if(img != null) ivImage.setImageBitmap(img.get(0));
 
-        ImageManager im = new ImageManager();
-        im.setFileName(movie.getImage());
-        im.execute(ImageManager.ACTION_DOWNLOAD);
-        im.setOnDataListener(new ImageManager.DataListener() {
-            @Override
-            public void onDataLoaded(ArrayList<Bitmap> img) {
+                }
+            });
+        }
 
-            }
-
-            @Override
-            public void onDataLoaded(Bitmap img) {
-                if(img != null) ivImage.setImageBitmap(img);
-            }
-        });
     }
 
     private void setUpStars(){
@@ -296,6 +289,7 @@ public class SingleMovieActivity extends AppCompatActivity implements SwipeRefre
 
     @Override
     public void onBackPressed() {
-        onBack(null);
+        super.onBackPressed();
+        saveChanges();
     }
 }

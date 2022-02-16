@@ -5,9 +5,15 @@ import static android.widget.AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCR
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,7 +22,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,11 +39,18 @@ import java.util.Collections;
 
 public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
+    public static final String CUSTOM_QUERY_KEY = "CustomQuery";
+    public static final String CUSTOM_TAG_KEY = "CustomQueryTag";
+
+
     private ArrayList<Movie> movies;
     private ArrayList<Bitmap> images;
     private MovieListAdapter mAdapter;
     private SwipeRefreshLayout swipeLayout;
     private SideMenuManager sideMenuManager;
+    private String customQuery;
+    private String customTag;
+
     private boolean asc = true;
 
 
@@ -45,6 +60,16 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
         setContentView(R.layout.activity_movies);
 
         images = null;
+        customQuery = null;
+        customTag = null;
+
+        String tmpQ = getIntent().getStringExtra(CUSTOM_QUERY_KEY);
+        String tmpT = getIntent().getStringExtra(CUSTOM_TAG_KEY);
+
+        if(tmpQ != null){
+            customQuery = tmpQ;
+            if(tmpT != null) customTag = tmpT;
+        }
 
         setSideMenu();
         setUpSwipeRefresh();
@@ -63,7 +88,7 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
     }
 
     private void createMovieList(){
-        String query = "SELECT filmy.*, " +
+        String defQuery = "SELECT filmy.*, " +
                 "COUNT(oceny.film_Id) 'Liczba ocen', " +
                 "IF(AVG(Ocena) IS NULL, 0, AVG((OcenaZdjecia+OcenaFabula+OcenaAktorzy+OcenaAudio)/4)) 'Srednia' " +
                 "FROM `filmy` LEFT JOIN oceny ON (oceny.film_Id = filmy.Id_film) " +
@@ -71,7 +96,7 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
                 "GROUP BY Id_film " +
                 "ORDER BY filmy.Tytul" + (asc?" ASC;":" DESC;");
 
-        createMovieList(query);
+        createMovieList(customQuery!= null? customQuery: defQuery);
     }
 
 
@@ -119,6 +144,7 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
     private void setSearchBar(){
 
         EditText searchBar = findViewById(R.id.search_bar);
+        if (customTag != null)searchBar.setHint(searchBar.getHint() + " ("+customTag+")");
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -138,7 +164,6 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
 
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private void addImagesToMovies(){
         String[] fileNames = new String[movies.size()];
         ImageManager im = new ImageManager();
@@ -149,29 +174,23 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
             else fileNames[i] = "";
         }
 
-            im.setFileName(fileNames);
-            im.execute(ImageManager.ACTION_DOWNLOAD);
+
+            im.downloadCover(fileNames);
             im.setOnDataListener(new ImageManager.DataListener() {
                 @Override
                 public void onDataLoaded(ArrayList<Bitmap> img) {
                     images = img;
                     if(!asc) Collections.reverse(images);
                     mAdapter.setImages(images);
-                    mAdapter.notifyDataSetChanged();
                 }
 
-                @Override
-                public void onDataLoaded(Bitmap img) {
-
-                }
             });
 
     }
 
     private boolean checkImages(){
         if (images == null) return false;
-        else if(images.size() != movies.size()) return false;
-        else return true;
+        else return images.size() == movies.size();
     }
 
     private void addMovieToList(String[] data){
@@ -214,8 +233,7 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
         RecyclerView mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        Drawable noImageIcon = getDrawable(R.drawable.ic_noimage);
-        mAdapter = new MovieListAdapter(movies, noImageIcon);
+        mAdapter = new MovieListAdapter(movies);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
@@ -247,7 +265,6 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
                 Intent intent = new Intent(MoviesActivity.this, SingleMovieActivity.class);
                 intent.putExtra("Movie", movie);
                 startActivity(intent);
-                finish();
 
             }
             catch (Exception e){

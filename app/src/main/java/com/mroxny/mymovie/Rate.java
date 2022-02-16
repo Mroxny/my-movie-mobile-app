@@ -6,7 +6,9 @@ public class Rate implements Serializable {
 
     private int id;
     private String movieTitle;
+    private int userID;
     private String userName;
+    private String userProfile;
     private int ratePictures;
     private int ratePlot;
     private int rateCast;
@@ -15,10 +17,12 @@ public class Rate implements Serializable {
 
 
 
-    public Rate (int id, String movieTitle, String userName, int ratePictures, int ratePlot, int rateCast, int rateAudio, int rate){
+    public Rate (int id, String movieTitle, int userId, String userName, String userProfile, int ratePictures, int ratePlot, int rateCast, int rateAudio, int rate){
         setId(id);
         setMovieTitle(movieTitle);
+        setUserID(userId);
         setUserName(userName);
+        setUserProfile(userProfile);
         setRatePictures(ratePictures);
         setRatePlot(ratePlot);
         setRateCast(rateCast);
@@ -42,12 +46,28 @@ public class Rate implements Serializable {
         return this.movieTitle;
     }
 
+    public void setUserID(int idNumber){
+        this.userID = idNumber;
+    }
+
+    public int getUserID(){
+        return this.userID;
+    }
+
     public void setUserName(String name){
         this.userName = name;
     }
 
     public String getUserName(){
         return this.userName;
+    }
+
+    public void setUserProfile(String path){
+        this.userProfile = path;
+    }
+
+    public String getUserProfile(){
+        return this.userProfile;
     }
 
     public void setRatePictures(int rate){

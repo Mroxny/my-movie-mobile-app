@@ -19,19 +19,35 @@
     <string name="button_cancel">Anuluj</string>
     <string name="button_yes">Tak</string>
     <string name="button_no">Nie</string>
+    <string name="button_click_here">Kliknij tutaj</string>
+    <string name="button_other_user_movies">Zobacz inne filmy ocenione przez tego użytkownika</string>
     <string name="tag_pictures">Zdjęcia</string>
     <string name="tag_plot">Fabuła</string>
     <string name="tag_cast">Obsada</string>
     <string name="tag_audio">Audio</string>
+    <string name="tag_movies_rated">Ocenione filmy</string>
     <string name="info_average_rate1">Twoja średnia ocena</string>
     <string name="info_average_rate2">Nie oceniono wszystkich kategorii</string>
     <string name="info_no_rates_yet">Brak ocen</string>
     <string name="info_added_movie">Film dodano pomyślnie</string>
+    <string name="info_activity_coming_soon">Ta aktywność będzie dostępna wkrótce</string>
+    <string name="info_no_rated_movies">Nie oceniłeś jeszcze żadnych filmów</string>
     <string name="info_log_out">Czy na pewno chcesz się wylogować?</string>
     <string name="tag_rate_info1">ocenia</string>
     <string name="tag_rate_info2">następująco</string>
     <string name="tag_average">Średnia ocena</string>
     <string name="tag_account">Konto</string>
     <string name="tag_logout">Wyloguj się</string>
-
+    <string name="notification_title_1">Wreszcie!!!</string>
+    <string name="notification_text_1">MyMovie otrzymało wersję 1.0!</string>
+    <string name="notification_big_text_1">
+        MyMovie otrzymało wersję 1.0!\n
+         Sprawdź co nowego: \n
+         - Nowe menu\n
+         - Wyświetlaj zdjęcia\n
+         - Strona "Konto"\n
+         - Nowy sposób dodawania filmów\n
+         - Nowy sposób sortowania filmów\n
+         - Wyświetlaj filmy oceniene przez ciebie\n
+    </string>
 </resources>

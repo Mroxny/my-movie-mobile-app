@@ -20,7 +20,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     private OnItemClickListener mListener;
     private MovieViewHolder holder;
     private ArrayList<Bitmap> imgArr;
-    private Drawable noImage;
 
 
     public interface OnItemClickListener {
@@ -34,6 +33,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     public static class MovieViewHolder extends RecyclerView.ViewHolder {
         public TextView title, orgTitle, year, avgRate, rateNum;
         public ImageView img;
+        private Drawable noImage;
 
 
         public MovieViewHolder(View itemView, final OnItemClickListener listener) {
@@ -44,6 +44,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
             avgRate = itemView.findViewById(R.id.item_avgRate);
             rateNum = itemView.findViewById(R.id.item_ratesNum);
             img = itemView.findViewById(R.id.item_image);
+            noImage = img.getDrawable();
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -60,9 +61,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         }
     }
 
-    public MovieListAdapter(ArrayList<Movie> list, Drawable noImageIcon) {
+    public MovieListAdapter(ArrayList<Movie> list) {
         movieList = list;
-        this.noImage = noImageIcon;
     }
 
     @Override
@@ -80,23 +80,22 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         Movie currentItem = movieList.get(position);
 
         holder.title.setText(currentItem.getTitle());
-        if(currentItem.getOriginalTitle().length()>0) holder.orgTitle.setText(currentItem.getOriginalTitle());
+        if(currentItem.getOriginalTitle()!=null && currentItem.getOriginalTitle().length()>0) holder.orgTitle.setText(currentItem.getOriginalTitle());
         else holder.orgTitle.setVisibility(View.GONE);
         holder.year.setText(Integer.toString(currentItem.getYear()));
         holder.avgRate.setText(String.format("%.2f",currentItem.getRateAverage()));
         holder.rateNum.setText(Integer.toString(currentItem.getRateNumber()));
 
-        if(imgArr != null)
-            if(imgArr.get(position) != null) holder.img.setImageBitmap(imgArr.get(position));
-            else holder.img.setImageDrawable(noImage);
-
-
+        if(imgArr != null && imgArr.get(position) != null) holder.img.setImageBitmap(imgArr.get(position));
+        else holder.img.setImageDrawable(holder.noImage);
 
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setImages(ArrayList<Bitmap> images){
         imgArr = images;
+        notifyDataSetChanged();
     }
 
     @Override

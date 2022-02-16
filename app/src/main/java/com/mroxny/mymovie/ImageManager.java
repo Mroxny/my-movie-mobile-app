@@ -23,23 +23,24 @@ import java.util.Objects;
 
 public class ImageManager extends AsyncTask<String, Void, String> {
 
-    protected static final String ACTION_DOWNLOAD = "download_image";
+    protected static final String ACTION_DOWNLOAD_COVER = "download_cover";
+    protected static final String ACTION_DOWNLOAD_PROFILE = "download_profile";
+
     protected static final String ACTION_UPLOAD = "upload_image";
 
-    private static final String URL_PREFIX = "https://mroxny.github.io/MyMovie_assets/img/covers/";
+    private static final String URL_COVER_PREFIX = "https://mroxny.github.io/MyMovie_assets/img/covers/";
+    private static final String URL_PROFILE_PREFIX = "https://mroxny.github.io/MyMovie_assets/img/profiles/";
+
 
 
     private FTPClient ftpClient;
     private ImageManager.DataListener listener;
     private String[] fileNames;
-    private String fileName;
     private ArrayList<Bitmap> images;
-    private Bitmap image;
 
 
     public  ImageManager(){
         listener = null;
-        fileName = null;
         fileNames = null;
     }
 
@@ -105,11 +106,37 @@ public class ImageManager extends AsyncTask<String, Void, String> {
         return null;
     }
 
-    public static ArrayList<Bitmap> downloadImageFromURL(String[] filename) {
+    public void downloadCover(String[] fileNames){
+        this.fileNames = fileNames;
+
+        execute(ACTION_DOWNLOAD_COVER);
+    }
+    public void downloadCover(String fileName){
+        this.fileNames = new String[1];
+        fileNames[0] = fileName;
+
+        execute(ACTION_DOWNLOAD_COVER);
+    }
+
+    public void downloadProfile(String[] fileNames){
+        this.fileNames = fileNames;
+
+        execute(ACTION_DOWNLOAD_PROFILE);
+    }
+    public void downloadProfile(String fileName){
+        this.fileNames = new String[1];
+        fileNames[0] = fileName;
+
+        execute(ACTION_DOWNLOAD_PROFILE);
+    }
+
+
+
+    private ArrayList<Bitmap> downloadImageFromURL(String prefix, String[] filename) {
         ArrayList<Bitmap> images = new ArrayList<>();
         for(int i = 0; i< filename.length; i++){
             try {
-                InputStream is = (InputStream) new URL(URL_PREFIX+filename[i]).getContent();
+                InputStream is = (InputStream) new URL(prefix+filename[i]).getContent();
                 images.add(BitmapFactory.decodeStream(is));
             } catch (Exception e) {
                 images.add(null);
@@ -118,38 +145,24 @@ public class ImageManager extends AsyncTask<String, Void, String> {
         return images;
     }
 
-    public static Bitmap downloadImageFromURL(String filename) {
-
-            try {
-                InputStream is = (InputStream) new URL(URL_PREFIX+filename).getContent();
-                return BitmapFactory.decodeStream(is);
-            } catch (Exception e) {
-                return null;
-            }
-    }
-
-    protected void setFileName(String[] names){
-        fileNames = names;
-    }
-
-    protected void setFileName(String names){
-        fileName = names;
-    }
 
     @Override
     protected String doInBackground(String... strings) {
-        if(Objects.equals(strings[0], ACTION_DOWNLOAD)){
-            System.out.println("Request download");
-            if(fileName != null) image = downloadImageFromURL(fileName);
-            else images = downloadImageFromURL(fileNames);
-            return ACTION_DOWNLOAD;
+        switch (strings[0]){
+            case ACTION_DOWNLOAD_COVER:
+                System.out.println("Request download covers");
+                images = downloadImageFromURL(URL_COVER_PREFIX,fileNames);
+                break;
+            case ACTION_DOWNLOAD_PROFILE:
+                System.out.println("Request download profiles");
+                images = downloadImageFromURL(URL_PROFILE_PREFIX,fileNames);
+                break;
+            case ACTION_UPLOAD:
+                System.out.println("Request upload");
 
+                break;
         }
-        else if(Objects.equals(strings[0], ACTION_UPLOAD)){
-            System.out.println("Request upload");
-            return ACTION_UPLOAD;
 
-        }
 
         return null;
 
@@ -159,27 +172,22 @@ public class ImageManager extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
 
-        if(fileName != null)listener.onDataLoaded(image);
-        else listener.onDataLoaded(images);
+        listener.onDataLoaded(images);
     }
 
     public void sendData (DataListener listener, Bitmap image, ArrayList<Bitmap> images){
-        listener.onDataLoaded(image);
+        //listener.onDataLoaded(image);
         listener.onDataLoaded(images);
     }
 
 
     public interface DataListener {
         void onDataLoaded(ArrayList<Bitmap> img);
-        void onDataLoaded(Bitmap img);
 
     }
     public abstract class DataLoader implements DataListener {
 
         public void onDataLoaded(ArrayList<Bitmap> img) {
-        }
-
-        public void onDataLoaded(Bitmap img) {
         }
 
     }

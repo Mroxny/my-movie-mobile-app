@@ -7,47 +7,149 @@
     tools:context=".AccountActivity"
     android:background="?attr/colorOnPrimary">
 
+
     <Button
         android:id="@+id/button"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:onClick="goBack"
         android:background="@drawable/ic_round_arrow_back_24"
+        android:onClick="goBack"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="UsingOnClickInXml" />
 
-    <TextView
-        android:id="@+id/ac_nickname"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/aa_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        tools:layout_editor_absoluteX="-27dp">
+
+        <TextView
+            android:id="@+id/aa_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="50dp"
+            android:text="@string/tag_account"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="40sp"
+            app:layout_constraintBottom_toBottomOf="@+id/item_imageHolder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/item_imageHolder" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/item_imageHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="?attr/colorOnPrimary"
+            android:elevation="10dp"
+            android:padding="2dp"
+            android:onClick="editProfile"
+            app:cardCornerRadius="45dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/aa_profile"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_empty_profile"
+                android:visibility="invisible"/>
+
+            <ProgressBar
+                android:id="@+id/aa_progress_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:onClick="goToMovieList"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_imageHolder"
+            tools:ignore="UsingOnClickInXml">
+
+            <TextView
+                android:id="@+id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tag_movies_rated"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="30sp" />
+
+
+            <TextView
+                android:id="@+id/aa_movies"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/text1"
+                android:text="10"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="30sp" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_click_here"
+            android:textColor="@color/grey"
+            app:layout_constraintEnd_toEndOf="@+id/relativeLayout"
+            app:layout_constraintStart_toStartOf="@+id/relativeLayout"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:text="@string/tag_logout"
+            android:onClick="showAlertDialog"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            tools:ignore="UsingOnClickInXml" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/aa_progress_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/tag_account"
-        android:textColor="?attr/colorPrimary"
-        android:textSize="40sp"
-        android:layout_marginEnd="50dp"
-        app:layout_constraintBottom_toBottomOf="@+id/item_imageHolder"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/item_imageHolder" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/item_imageHolder"
+    <TextView
+        android:id="@+id/aa_error_sign"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="?attr/colorOnPrimary"
-        android:elevation="10dp"
-        android:padding="2dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="30dp"
-        app:cardCornerRadius="45dp"
+        android:layout_margin="20dp"
+        android:text="@string/error_unknown"
+        android:textColor="?attr/colorPrimary"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
 
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_empty_profile" />
 
-    </androidx.cardview.widget.CardView>
+
 
 
 
