@@ -17,9 +17,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -83,20 +85,23 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
         NavigationView navigationView = findViewById(R.id.nav_view);
         Button toggle = findViewById(R.id.nav_toggle);
 
-        sideMenuManager = new SideMenuManager(this,drawer,navigationView,toggle);
+        sideMenuManager = new SideMenuManager(this, drawer, navigationView, toggle);
         sideMenuManager.setSideMenu();
     }
 
     private void createMovieList(){
-        String defQuery = "SELECT filmy.*, " +
-                "COUNT(oceny.film_Id) 'Liczba ocen', " +
-                "IF(AVG(Ocena) IS NULL, 0, AVG((OcenaZdjecia+OcenaFabula+OcenaAktorzy+OcenaAudio)/4)) 'Srednia' " +
-                "FROM `filmy` LEFT JOIN oceny ON (oceny.film_Id = filmy.Id_film) " +
-                "WHERE Zatwierdzony = 1 " +
-                "GROUP BY Id_film " +
-                "ORDER BY filmy.Tytul" + (asc?" ASC;":" DESC;");
+        String defQuery = "SELECT m.*, \n" +
+                "COUNT(mo1.film_Id) 'Liczba ocen', \n" +
+                "IF(AVG(mo1.Ocena) IS NULL, 0, AVG((mo1.OcenaZdjecia+mo1.OcenaFabula+mo1.OcenaAktorzy+mo1.OcenaAudio)/4)) 'Srednia' \n" +
+                "FROM filmy m \n" +
+                "INNER JOIN oceny mo1 on m.Id_film = mo1.film_Id \n" +
+                "INNER JOIN oceny mo2 on m.Id_film = mo2.film_Id \n" +
+                "WHERE m.Zatwierdzony = 1 \n" +
+                "GROUP BY m.Id_film \n";
 
-        createMovieList(customQuery!= null? customQuery: defQuery);
+        String finalQuery = (customQuery!= null? customQuery: defQuery) + "ORDER BY m.Tytul" + (asc?" ASC":" DESC")+";";
+
+        createMovieList(finalQuery);
     }
 
 
@@ -144,6 +149,7 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
     private void setSearchBar(){
 
         EditText searchBar = findViewById(R.id.search_bar);
+        searchBar.setHint(getResources().getString(R.string.hint_search));
         if (customTag != null)searchBar.setHint(searchBar.getHint() + " ("+customTag+")");
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override

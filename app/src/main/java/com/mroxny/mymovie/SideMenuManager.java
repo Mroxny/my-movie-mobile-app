@@ -10,6 +10,7 @@ import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
@@ -35,11 +36,22 @@ public class SideMenuManager implements NavigationView.OnNavigationItemSelectedL
     public void setSideMenu(){
 
         navigationView.setNavigationItemSelectedListener(this);
-
         toggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!drawer.isDrawerOpen(GravityCompat.START)) drawer.openDrawer(GravityCompat.START);
+            }
+        });
+
+        ImageView banner = navigationView.getHeaderView(0).findViewById(R.id.header_logo);
+        banner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, MoviesActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                context.startActivity(intent);
+                ((Activity)context).finish();
             }
         });
     }
@@ -77,6 +89,8 @@ public class SideMenuManager implements NavigationView.OnNavigationItemSelectedL
         PreferencesManager.clearData(PreferencesManager.LOGGED_USER_PASSWORD, context);
 
         Intent intent = new Intent(context, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+
         context.startActivity(intent);
         ((Activity)context).finish();
     }

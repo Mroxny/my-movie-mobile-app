@@ -116,6 +116,8 @@ public class AccountActivity extends AppCompatActivity {
         PreferencesManager.clearData(PreferencesManager.LOGGED_USER_PASSWORD, this);
 
         Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+
         startActivity(intent);
         finish();
     }
@@ -142,16 +144,15 @@ public class AccountActivity extends AppCompatActivity {
 
     public void goToMovieList(View view){
         if(ratedMovies>0){
-            String query = "SELECT o.*, \n" +
-                    "COUNT(op1.film_Id) 'Liczba ocen', \n" +
-                    "IF(AVG(op1.Ocena) IS NULL, 0, AVG((op1.OcenaZdjecia+op1.OcenaFabula+op1.OcenaAktorzy+op1.OcenaAudio)/4)) 'Srednia' \n" +
-                    "FROM filmy o \n" +
-                    "INNER JOIN oceny op1 on o.Id_film = op1.film_Id \n" +
-                    "INNER JOIN oceny op2 on o.Id_film = op2.film_Id \n" +
-                    "WHERE o.Zatwierdzony = 1 \n" +
-                    "AND op2.uzytkownik_Id = "+userID+"\n" +
-                    "GROUP BY o.Id_film \n" +
-                    "ORDER BY o.Tytul ASC;";
+            String query = "SELECT m.*, \n" +
+                    "COUNT(mo1.film_Id) 'Liczba ocen', \n" +
+                    "IF(AVG(mo1.Ocena) IS NULL, 0, AVG((mo1.OcenaZdjecia+mo1.OcenaFabula+mo1.OcenaAktorzy+mo1.OcenaAudio)/4)) 'Srednia' \n" +
+                    "FROM filmy m \n" +
+                    "INNER JOIN oceny mo1 on m.Id_film = mo1.film_Id \n" +
+                    "INNER JOIN oceny mo2 on m.Id_film = mo2.film_Id \n" +
+                    "WHERE m.Zatwierdzony = 1 \n" +
+                    "AND mo2.uzytkownik_Id = "+userID+"\n" +
+                    "GROUP BY m.Id_film \n";
 
             Intent intent = new Intent(this, MoviesActivity.class);
             intent.putExtra(MoviesActivity.CUSTOM_QUERY_KEY,query);
