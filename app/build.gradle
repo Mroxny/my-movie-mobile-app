@@ -9,7 +9,7 @@ android {
         applicationId "com.mroxny.mymovie"
         minSdk 21
         targetSdk 31
-        versionCode 8
+        versionCode 9
         versionName "1.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -29,13 +29,13 @@ android {
 
 dependencies {
 
-    implementation 'androidx.appcompat:appcompat:1.4.0'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation files('libs\\mysql-connector.jar')
-    implementation files('libs\\commons-net-3.8.0.jar')
-    testImplementation 'junit:junit:4.+'
+    implementation files('libs/mysql-connector.jar')
+    implementation files('libs/commons-net-3.8.0.jar')
+    testImplementation 'junit:junit:'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }

@@ -64,15 +64,18 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:text="@string/button_other_user_movies"
                 android:textAlignment="center"
                 android:gravity="center"
                 android:textColor="@color/grey"
                 android:onClick="goToMovieList"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 android:layout_marginBottom="20dp"
                 android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"/>
+                android:layout_marginEnd="30dp"
+                tools:ignore="UsingOnClickInXml" />
 
                 <ImageView
                     android:layout_width="50dp"
@@ -175,7 +178,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Average: 0.0"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="15dp"
                     android:textSize="30sp"
                     android:textColor="?attr/colorPrimary"/>
 

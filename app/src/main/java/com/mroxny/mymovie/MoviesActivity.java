@@ -94,8 +94,7 @@ public class MoviesActivity extends AppCompatActivity implements SwipeRefreshLay
                 "COUNT(mo1.film_Id) 'Liczba ocen', \n" +
                 "IF(AVG(mo1.Ocena) IS NULL, 0, AVG((mo1.OcenaZdjecia+mo1.OcenaFabula+mo1.OcenaAktorzy+mo1.OcenaAudio)/4)) 'Srednia' \n" +
                 "FROM filmy m \n" +
-                "INNER JOIN oceny mo1 on m.Id_film = mo1.film_Id \n" +
-                "INNER JOIN oceny mo2 on m.Id_film = mo2.film_Id \n" +
+                "LEFT JOIN oceny mo1 on m.Id_film = mo1.film_Id \n" +
                 "WHERE m.Zatwierdzony = 1 \n" +
                 "GROUP BY m.Id_film \n";
 
