@@ -62,7 +62,7 @@ public class InputManager extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         System.out.println("Input result: "+result);
-        listener.onDataUploaded(result);
+        if(listener != null) listener.onDataUploaded(result);
     }
 
     public interface DataListener {
