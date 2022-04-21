@@ -165,7 +165,7 @@ public class SingleMovieActivity extends AppCompatActivity implements SwipeRefre
             im.setOnDataListener(new ImageManager.DataListener() {
                 @Override
                 public void onDataLoaded(ArrayList<Bitmap> img) {
-                    if(img != null) ivImage.setImageBitmap(img.get(0));
+                    if(img != null && img.get(0) != null) ivImage.setImageBitmap(img.get(0));
 
                 }
             });
